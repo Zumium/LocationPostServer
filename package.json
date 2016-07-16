@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/Zumium/LocationPostServer/issues"
   },
-  "homepage": "https://github.com/Zumium/LocationPostServer#readme"
+  "homepage": "https://github.com/Zumium/LocationPostServer#readme",
+  "dependencies":{
+    "express": ">=4.14.0",
+    "mongoose": ">=4.5.4",
+    "passport": ">=0.3.2",
+    "passport-local": ">=1.0.0"
+  }
 }
