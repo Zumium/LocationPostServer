@@ -19,7 +19,7 @@ var accountSchema=mongoose.Schema({
 var userSchema=mongoose.Schema({
 	person:personSchema,
 	account:accountSchema,
-	follow:[Schema.Types.ObjectId]
+	follow:[mongoose.Schema.Types.ObjectId]
 });
 
 exports.User=mongoose.model('User',userSchema);
