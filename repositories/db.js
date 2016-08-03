@@ -6,7 +6,7 @@ var personSchema=mongoose.Schema({
 	name:String,
 	portrait:String,
 	age:{type:Number,min:0,max:200},
-	gender:String,
+	gender:{type:String,enum:['Male','Female']},
 	birthday:Date,
 	briefIntro:String
 },{id:false,_id:false});
@@ -23,3 +23,4 @@ var userSchema=mongoose.Schema({
 });
 
 exports.User=mongoose.model('User',userSchema);
+//======================================================
