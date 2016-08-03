@@ -1,0 +1,17 @@
+User:
+{
+  "id":"用户ID",
+  "person":{
+    "name":"名称",
+    "portrait":"头像",
+    "age":年龄,
+    "gender":"性别",
+    "birthday":生日,
+    "briefIntro":"短自我介绍"
+  },
+  "account":{
+    "username":"用户名",
+    "password":"密码"
+  },
+  "follow":["关注帐号id"]
+}
