@@ -11,14 +11,10 @@ var personSchema=mongoose.Schema({
 	briefIntro:String
 },{id:false,_id:false});
 
-var accountSchema=mongoose.Schema({
-	username:String,
-	password:String
-},{id:false,_id:false});
-
 var userSchema=mongoose.Schema({
+	username:{type:String,unique:true,required:true,dropDups:true},
+	password:{type:String,required:true},
 	person:personSchema,
-	account:accountSchema,
 	follow:[mongoose.Schema.Types.ObjectId]
 });
 

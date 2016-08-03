@@ -1,6 +1,8 @@
 User:
 {
   "id":"用户ID",
+  "username":"用户名",
+  "password":"密码",
   "person":{
     "name":"名称",
     "portrait":"头像",
@@ -9,9 +11,18 @@ User:
     "birthday":生日,
     "briefIntro":"短自我介绍"
   },
-  "account":{
-    "username":"用户名",
-    "password":"密码"
-  },
   "follow":["关注帐号id"]
+}
+
+Post:
+{
+  "id":"推文ID",
+  "position":{
+    "latitude":"纬度",
+    "longitude":"经度"
+  },
+  "content":"内容",
+  "pictures":["图片(地址)"],
+  "time":"时间",
+  "sender":"发送者"
 }
