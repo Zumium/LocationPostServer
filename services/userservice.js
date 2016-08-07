@@ -21,7 +21,7 @@ exports.addUser=function(personInfo){
 
 exports.verifyUser=function(username,password){
 	return new Promise((resolve,reject)=>{
-		db.User.find({username:username})
+		db.User.findOne({username:username})
 			.then((user)=>{
 				if(!user) return resolve(false);
 				resolve(user.password===password);
