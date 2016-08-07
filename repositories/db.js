@@ -10,7 +10,7 @@ var personSchema=mongoose.Schema({
 	gender:{type:String,required:true,enum:['Male','Female']},
 	birthday:{type:Date,required:true},
 	briefIntro:String
-},{id:false,_id:false});
+},{id:false,_id:false,toJSON:{virtuals:true}});
 personSchema.virtual('age').get(function(){
 	return (new Date()).getYear()-this.birthday.getYear();
 });
