@@ -7,11 +7,13 @@ mongoose.connect('mongodb://mongodb/locationpost');
 var personSchema=mongoose.Schema({
 	name:String,
 	portrait:String,
-	age:{type:Number,min:0,max:200},
-	gender:{type:String,enum:['Male','Female']},
-	birthday:Date,
+	gender:{type:String,required:true,enum:['Male','Female']},
+	birthday:{type:Date,required:true},
 	briefIntro:String
 },{id:false,_id:false});
+personSchema.virtual('age').get(function(){
+	return (new Date()).getYear()-this.birthday.getYear();
+});
 
 var userSchema=mongoose.Schema({
 	username:{type:String,unique:true,required:true,dropDups:true},
