@@ -20,3 +20,17 @@ var userSchema=mongoose.Schema({
 
 exports.User=mongoose.model('User',userSchema);
 //======================================================
+var positionSchema=mongoose.Schema({
+	latitude:{type:Number,min:-90,max:90},
+	longitude:{type:Number,min:-180,max:180}
+},{id:false,_id:false});
+
+var postSchema=mongoose.Schema({
+	position:positionSchema,
+	content:{type:String,required:true},
+	pictures:[String],
+	time:{type:Date,default:Date.now},
+	sender:{type:String,required:true}
+});
+
+exports.Post=mongoose.model('Post',postSchema);
