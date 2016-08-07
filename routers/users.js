@@ -6,8 +6,8 @@ var router=module.exports=express.Router();
 
 router.post('/',(req,res,next)=>{
 	us.addUser(req.body)
-		.then(()=>{
-			res.status(201).location('/users/'+req.body.username);
+		.then((newUser)=>{
+			res.location('/users/'+newUser.username).sendStatus(201);
 		})
 		.catch(next);
 });

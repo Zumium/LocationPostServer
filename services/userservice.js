@@ -15,7 +15,7 @@ exports.addUser=function(personInfo){
 		delete personalInformation['username'];
 		delete personalInformation['password'];
 
-		db.User.create({username:username,password:password,person:personalInformation,follow:[]}).then(()=>{resolve();},reject);
+		db.User.create({username:username,password:password,person:personalInformation,follow:[]}).then(resolve,reject);
 	});
 }
 
