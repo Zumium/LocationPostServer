@@ -20,11 +20,11 @@ var userSchema=mongoose.Schema({
 	password:{type:String,required:true},
 	person:personSchema,
 	follow:[mongoose.Schema.Types.ObjectId]
-},{toJSON:{virtuals:true},
+},{toJSON:{virtuals:true,
 	transform:function(doc,ret,options){
 		  	delete ret._id;
 			return ret;
-		  }
+		  }}
 });
 
 exports.User=mongoose.model('User',userSchema);
