@@ -6,6 +6,7 @@ var authComponent=require('./components/auth');
 var errorHandler=require('./middlewares/error-handler');
 
 var routerAuth=require('./routers/auth');
+var routerUsers=require('./routers/users');
 
 var app=express();
 
@@ -15,6 +16,7 @@ app.use(passport.initialize());
 app.use(bodyParser.json());
 
 app.use('/auth',routerAuth);
+app.use('/users',routerUsers);
 
 app.use(passport.authenticate('basic',{session:false}));
 
