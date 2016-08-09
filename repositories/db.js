@@ -19,7 +19,7 @@ var userSchema=mongoose.Schema({
 	username:{type:String,unique:true,required:true,dropDups:true},
 	password:{type:String,required:true},
 	person:personSchema,
-	follow:[mongoose.Schema.Types.ObjectId]
+	follow:{type:[String],default:[]}
 },{toJSON:{virtuals:true,
 	transform:function(doc,ret,options){
 		  	delete ret._id;
