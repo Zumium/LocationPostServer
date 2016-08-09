@@ -53,11 +53,10 @@ router.get('/:username/posts',(req,res,next)=>{
 });
 //============================================================
 router.get('/:username/follow',(req,res,next)=>{
-	us.findOneByUsername({username:req.params.username})
+	us.findOneByUsername(req.params.username)
 		.then((user)=>{
 			return Promise.all(user.follow.map((followerName)=>{
-				if(followerName)
-					return us.findOneByUsername({username:followerName});
+				return us.findOneByUsername(followerName);
 			}));
 		})
 		.then((followers)=>{
