@@ -4,6 +4,7 @@ var genError=require('../tools/gene-error');
 var userTools=require('../tools/user');
 var express=require('express');
 var passport=require('passport');
+var Promise=require('bluebird');
 
 var router=module.exports=express.Router();
 
@@ -46,6 +47,25 @@ router.get('/:username/posts',(req,res,next)=>{
 		.then((posts)=>{
 			res.status(200).json(posts.map((post)=>{
 				return post.toJSON();
+			}));
+		})
+		.catch(next);
+});
+//============================================================
+router.get('/:username/follow',(req,res,next)=>{
+	us.findOneByUsername({username:req.params.username})
+		.then((user)=>{
+			return Promise.all(user.follow.map((followerName)=>{
+				if(followerName)
+					return us.findOneByUsername({username:followerName});
+			}));
+		})
+		.then((followers)=>{
+			res.status(200).json(followers.map((follower)=>{
+				var followerInfo=follower.toJSON();
+				delete followerInfo.password;
+				delete followerInfo.follow;
+				return followerInfo;
 			}));
 		})
 		.catch(next);
