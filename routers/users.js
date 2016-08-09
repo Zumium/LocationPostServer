@@ -62,9 +62,8 @@ router.get('/:username/follow',(req,res,next)=>{
 		})
 		.then((followers)=>{
 			res.status(200).json(followers.map((follower)=>{
-				var followerInfo=follower.toJSON();
-				delete followerInfo.password;
-				delete followerInfo.follow;
+				var followerInfo=userTools.abstractUserInfo(follower);
+				followerInfo.username=follower.username;
 				return followerInfo;
 			}));
 		})
