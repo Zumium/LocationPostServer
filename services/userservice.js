@@ -29,3 +29,11 @@ exports.verifyUser=function(username,password){
 			.catch(reject);
 	});
 }
+
+exports.findOneByUsername=function(username){
+	return new Promise((resolve,reject)=>{
+		db.User.findOne({username:username})
+			.then(resolve)
+			.catch(reject);
+	});
+}
