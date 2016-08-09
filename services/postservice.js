@@ -1,9 +1,9 @@
 var Promise=require('bluebird');
-var db=require('./repositories/db');
+var db=require('../repositories/db');
 
-exports.pushlishNewPost=function(post){
+exports.publishNewPost=function(post){
 	return new Promise((resolve,reject)=>{
-		db.create(post)
+		db.Post.create(post)
 			.then(resolve,reject);
 	});
 }

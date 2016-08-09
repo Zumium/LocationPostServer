@@ -30,13 +30,13 @@ var userSchema=mongoose.Schema({
 
 exports.User=mongoose.model('User',userSchema);
 //======================================================
-var positionSchema=mongoose.Schema({
+var locationSchema=mongoose.Schema({
 	latitude:{type:Number,min:-90,max:90,required:true},
 	longitude:{type:Number,min:-180,max:180,required:true}
 },{id:false,_id:false});
 
 var postSchema=mongoose.Schema({
-	position:{type:positionSchema,required:true},
+	location:{type:locationSchema,required:true},
 	content:{type:String,required:true},
 	pictures:[String],
 	time:{type:Date,default:Date.now},

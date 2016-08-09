@@ -17,7 +17,7 @@ User:
 Post:
 {
   "id":"推文ID",
-  "position":{
+  "location":{
     "latitude":"纬度",
     "longitude":"经度"
   },
