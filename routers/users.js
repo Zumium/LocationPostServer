@@ -17,8 +17,21 @@ router.post('/',(req,res,next)=>{
 router.get('/:username',(req,res,next)=>{
 	us.findOneByUsername(req.params.username)
 		.then((user)=>{
-			if(!user) throw genError(404,'No such user');
 			res.status(200).json(userTools.abstractUserInfo(user));
+		})
+		.catch(next);
+});
+
+router.patch('/:username',(req,res,next)=>{
+	//permission check
+	if(req.user!=req.params.username) throw genError(403,'Not permitted');
+	us.findOneByUsername(req.params.username)
+		.then((user)=>{
+			return user.update(req.body);
+		})
+		.then((result)=>{
+			if(result.ok==0) throw genError(400,'Operation failed due to wrong request');
+			res.sendStatus(200);
 		})
 		.catch(next);
 });
