@@ -33,7 +33,10 @@ exports.verifyUser=function(username,password){
 exports.findOneByUsername=function(username){
 	return new Promise((resolve,reject)=>{
 		db.User.findOne({username:username})
-			.then(resolve)
+			.then((user)=>{
+				if(!user) throw genError(404,'No such user');
+				resolve(user);
+			})
 			.catch(reject);
 	});
 }

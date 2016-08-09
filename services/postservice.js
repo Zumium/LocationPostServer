@@ -1,5 +1,6 @@
 var Promise=require('bluebird');
 var db=require('../repositories/db');
+var genError=require('../tools/gene-error');
 
 exports.publishNewPost=function(post){
 	return new Promise((resolve,reject)=>{
@@ -11,7 +12,10 @@ exports.publishNewPost=function(post){
 exports.findOneById=function(id){
 	return new Promise((resolve,reject)=>{
 		db.Post.findOne({_id:id})
-			.then(resolve)
-			.catch(reject)
+			.then((post)=>{
+				if(!post) throw genError(404,'No such post');
+				resolve(post);
+			})
+			.catch(reject);
 	});
 }
