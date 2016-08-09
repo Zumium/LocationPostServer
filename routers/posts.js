@@ -17,3 +17,11 @@ router.post('/',
 				.catch(next);
 		}
 );
+//==========================================================
+router.get('/:pid',(req,res,next)=>{
+	ps.findOneById(req.params.pid)
+		.then((post)=>{
+			res.status(200).json(post.toJSON());
+		})
+		.catch(next);
+});

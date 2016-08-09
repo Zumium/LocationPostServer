@@ -7,3 +7,11 @@ exports.publishNewPost=function(post){
 			.then(resolve,reject);
 	});
 }
+
+exports.findOneById=function(id){
+	return new Promise((resolve,reject)=>{
+		db.Post.findOne({_id:id})
+			.then(resolve)
+			.catch(reject)
+	});
+}
