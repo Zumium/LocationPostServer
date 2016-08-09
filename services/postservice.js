@@ -19,3 +19,11 @@ exports.findOneById=function(id){
 			.catch(reject);
 	});
 }
+
+exports.findBySender=function(sender){
+	return new Promise((resolve,reject)=>{
+		db.Post.find({sender:sender})
+			.then(resolve)
+			.catch(reject);
+	});
+}

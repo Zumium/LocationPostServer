@@ -1,4 +1,5 @@
 var us=require('../services/userservice');
+var ps=require('../services/postservice');
 var genError=require('../tools/gene-error');
 var userTools=require('../tools/user');
 var express=require('express');
@@ -39,3 +40,13 @@ router.patch('/:username',
 				.catch(next);
 		}
 );
+//=============================================================
+router.get('/:username/posts',(req,res,next)=>{
+	ps.findBySender(req.params.username)
+		.then((posts)=>{
+			res.status(200).json(posts.map((post)=>{
+				return post.toJSON();
+			}));
+		})
+		.catch(next);
+});
