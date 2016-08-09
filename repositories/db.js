@@ -41,6 +41,13 @@ var postSchema=mongoose.Schema({
 	pictures:[String],
 	time:{type:Date,default:Date.now},
 	sender:{type:String,required:true}
-});
+},{toJSON:{
+	virtuals:true,
+	transform:function(doc,ret,options){
+		  	delete ret._id;
+			delete ret.__v;
+			return ret;
+		  }
+}});
 
 exports.Post=mongoose.model('Post',postSchema);
