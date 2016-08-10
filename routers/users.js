@@ -89,7 +89,7 @@ router.post('/:username/follow',
 			return us.findOneByUsername(req.params.username);
 		})
 		.then((user)=>{
-			user.set('follow',user.get('follow').concat(req.body.username.filter((uname)=>{return !req.body.username.hasOwnProperty(uname);})));
+			user.set('follow',user.get('follow').concat(req.body.username.filter((uname)=>{return !user.get('follow').hasOwnProperty(uname);})));
 			return user.save();
 		})
 		.then(()=>{
