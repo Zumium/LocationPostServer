@@ -76,6 +76,8 @@ router.post('/:username/follow',
 		new Promise((resolve,reject)=>{
 			if(!util.isArray(req.body.username))
 				return reject(genError(400,'Wrong request format'));
+			if(req.user!=req.params.username)
+				return reject(genError(403,'Not permitted'));
 			resolve();
 		})
 		.then(()=>{
@@ -98,3 +100,30 @@ router.post('/:username/follow',
 		})
 		.catch(next);
 });
+
+router.delete('/:username/follow',
+	passport.authenticate('basic',{session:false}),
+	(req,res,next)=>{
+		new Promise((resolve,reject)=>{
+			if(!util.isArray(req.body.username))
+				return reject(genError(400,'Wrong request format'));
+			if(req.user!=req.params.username)
+				return reject(genError(403,'Not permitted'));
+			resolve();
+		})
+		.then(()=>{
+			return us.findOneByUsername(req.params.username);
+		})
+		.then((user)=>{
+			var originalFollowerList=user.get('follow');
+			user.set('follow',originalFollowerList.filter((follower)=>{
+				return !req.body.username.includes(follower);
+			}));
+			return user.save();
+		})
+		.then(()=>{
+			res.sendStatus(200);
+		})
+		.catch(next);
+	}
+);
