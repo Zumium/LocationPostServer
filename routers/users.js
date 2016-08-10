@@ -70,60 +70,71 @@ router.get('/:username/follow',(req,res,next)=>{
 		.catch(next);
 });
 
-router.post('/:username/follow',
+router.patch('/:username/follow',
 	passport.authenticate('basic',{session:false}),
 	(req,res,next)=>{
-		new Promise((resolve,reject)=>{
-			if(!util.isArray(req.body.username))
-				return reject(genError(400,'Wrong request format'));
-			if(req.user!=req.params.username)
-				return reject(genError(403,'Not permitted'));
-			resolve();
-		})
-		.then(()=>{
-			return Promise.all(req.body.username.map((eachUser)=>{
-				return us.checkUserExists(eachUser);
-			}));
-		})
-		.then((validationResults)=>{
-			if(!validationResults.reduce((x,y)=>{return x&&y;}))
-				throw genError(400,'Unexisting user(s) in the request');
-			return us.findOneByUsername(req.params.username);
-		})
-		.then((user)=>{
-			var originalFollowerList=user.get('follow');
-			user.set('follow',originalFollowerList.concat(req.body.username.filter((uname)=>{return !originalFollowerList.includes(uname);})));
-			return user.save();
-		})
-		.then(()=>{
-			res.sendStatus(200);
-		})
-		.catch(next);
-});
-
-router.delete('/:username/follow',
-	passport.authenticate('basic',{session:false}),
-	(req,res,next)=>{
-		new Promise((resolve,reject)=>{
-			if(!util.isArray(req.body.username))
-				return reject(genError(400,'Wrong request format'));
-			if(req.user!=req.params.username)
-				return reject(genError(403,'Not permitted'));
-			resolve();
-		})
-		.then(()=>{
-			return us.findOneByUsername(req.params.username);
-		})
-		.then((user)=>{
-			var originalFollowerList=user.get('follow');
-			user.set('follow',originalFollowerList.filter((follower)=>{
-				return !req.body.username.includes(follower);
-			}));
-			return user.save();
-		})
-		.then(()=>{
-			res.sendStatus(200);
-		})
-		.catch(next);
+		switch(req.body.operation){
+			case 'add':
+				addFollowing(req,res,next);
+				break;
+			case 'delete':
+				delFollowing(req,res,next);
+				break;
+			default:
+				next(genError(400,'No such operation'));
+		}
 	}
 );
+
+function addFollowing(req,res,next){
+	new Promise((resolve,reject)=>{
+		if(!util.isArray(req.body.username))
+			return reject(genError(400,'Wrong request format'));
+		if(req.user!=req.params.username)
+			return reject(genError(403,'Not permitted'));
+		resolve();
+	})
+	.then(()=>{
+		return Promise.all(req.body.username.map((eachUser)=>{
+			return us.checkUserExists(eachUser);
+		}));
+	})
+	.then((validationResults)=>{
+		if(!validationResults.reduce((x,y)=>{return x&&y;}))
+			throw genError(400,'Unexisting user(s) in the request');
+		return us.findOneByUsername(req.params.username);
+	})
+	.then((user)=>{
+		var originalFollowerList=user.get('follow');
+		user.set('follow',originalFollowerList.concat(req.body.username.filter((uname)=>{return !originalFollowerList.includes(uname);})));
+		return user.save();
+	})
+	.then(()=>{
+		res.sendStatus(200);
+	})
+	.catch(next);
+}
+
+function delFollowing(req,res,next){
+	new Promise((resolve,reject)=>{
+		if(!util.isArray(req.body.username))
+			return reject(genError(400,'Wrong request format'));
+		if(req.user!=req.params.username)
+			return reject(genError(403,'Not permitted'));
+		resolve();
+	})
+	.then(()=>{
+		return us.findOneByUsername(req.params.username);
+	})
+	.then((user)=>{
+		var originalFollowerList=user.get('follow');
+		user.set('follow',originalFollowerList.filter((follower)=>{
+			return !req.body.username.includes(follower);
+		}));
+		return user.save();
+	})
+	.then(()=>{
+		res.sendStatus(200);
+	})
+	.catch(next);
+}
