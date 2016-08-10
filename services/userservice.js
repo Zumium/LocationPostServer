@@ -40,3 +40,14 @@ exports.findOneByUsername=function(username){
 			.catch(reject);
 	});
 }
+
+exports.checkUserExists=function(username){
+	return new Promise((resolve,reject)=>{
+		db.User.count({username:username})
+			.then((count)=>{
+				if(count==0) return resolve(false);
+				resolve(true);
+			})
+			.catch(reject);
+	});
+}

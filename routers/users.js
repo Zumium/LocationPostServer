@@ -2,6 +2,7 @@ var us=require('../services/userservice');
 var ps=require('../services/postservice');
 var genError=require('../tools/gene-error');
 var userTools=require('../tools/user');
+var util=require('util');
 var express=require('express');
 var passport=require('passport');
 var Promise=require('bluebird');
@@ -65,6 +66,34 @@ router.get('/:username/follow',(req,res,next)=>{
 				followerInfo.username=follower.username;
 				return followerInfo;
 			}));
+		})
+		.catch(next);
+});
+
+router.post('/:username/follow',
+	passport.authenticate('basic',{session:false}),
+	(req,res,next)=>{
+		new Promise((resolve,reject)=>{
+			if(!util.isArray(req.body.username))
+				return reject(genError(400,'Wrong request format'));
+			resolve();
+		})
+		.then(()=>{
+			return Promise.all(req.body.username.map((eachUser)=>{
+				return us.checkUserExists(eachUser);
+			}));
+		})
+		.then((validationResults)=>{
+			if(!validationResults.reduce((x,y)=>{return x&&y;}))
+				throw genError(400,'Unexisting user(s) in the request');
+			return us.findOneByUsername(req.params.username);
+		})
+		.then((user)=>{
+			user.follow.concat(req.body.username);
+			return user.save();
+		})
+		.then(()=>{
+			res.sendStatus(200);
 		})
 		.catch(next);
 });
