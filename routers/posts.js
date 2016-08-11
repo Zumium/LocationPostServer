@@ -32,7 +32,7 @@ router.delete('/:pid',
 	(req,res,next)=>{
 		ps.findOneById(req.params.pid)
 			.then((post)=>{
-				if(post.get('sender')!=req.body)
+				if(post.get('sender')!=req.user)
 					throw genError(403,'Not permitted');
 				return post.remove();
 			})
