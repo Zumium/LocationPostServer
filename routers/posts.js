@@ -1,6 +1,7 @@
 var express=require('express');
 var passport=require('passport');
 var ps=require('../services/postservice');
+var genError=require('../tools/gene-error');
 
 var router=module.exports=express.Router();
 
@@ -25,3 +26,19 @@ router.get('/:pid',(req,res,next)=>{
 		})
 		.catch(next);
 });
+
+router.delete('/:pid',
+	passport.authenticate('basic',{session:false}),
+	(req,res,next)=>{
+		ps.findOneById(req.params.pid)
+			.then((post)=>{
+				if(post.get('sender')!=req.body)
+					throw genError(403,'Not permitted');
+				return post.remove();
+			})
+			.then(()=>{
+				res.sendStatus(204);
+			})
+			.catch(next);
+	}
+);
