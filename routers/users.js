@@ -128,6 +128,8 @@ function delFollowing(req,res,next){
 	})
 	.then((user)=>{
 		var originalFollowerList=user.get('follow');
+		if(!req.body.username.map((eachOne)=>{return originalFollowerList.includes(eachOne);}).reduce((x,y)=>{return x&&y;}))
+			throw genError(400,'username list error');
 		user.set('follow',originalFollowerList.filter((follower)=>{
 			return !req.body.username.includes(follower);
 		}));
