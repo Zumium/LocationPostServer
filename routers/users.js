@@ -31,9 +31,12 @@ router.patch('/:username',
 		(req,res,next)=>{
 			//permission check
 			if(req.user!=req.params.username) throw genError(403,'Not permitted');
+			if(req.body.username)
+				throw genError(400,'Cannot to change username');
+
 			us.findOneByUsername(req.params.username)
 				.then((user)=>{
-					return user.update(req.body);
+					return user.update({person:req.body});
 				})
 				.then((result)=>{
 					if(result.ok==0) throw genError(400,'Operation failed due to wrong request');
