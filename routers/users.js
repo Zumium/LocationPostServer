@@ -54,12 +54,12 @@ router.put('/:username/password',
 		if(req.user!=req.params.username)
 			return next(genError(403,'Not permitted'));
 		//content valiation check
-		if(!util.isString(req.body))
+		if(!util.isString(req.body.password))
 			return next(genError(400,'Wrong request content'));
 
 		us.findOneByUsername(req.params.username)
 			.then((user)=>{
-				return user.update({password:req.body}); //filter out other properties for safety
+				return user.update({password:req.body.password}); //filter out other properties for safety
 			})
 			.then(()=>{
 				res.sendStatus(204);
