@@ -2,6 +2,8 @@ var express=require('express');
 var passport=require('passport');
 var bodyParser=require('body-parser');
 
+var pts=require('./services/portraitservice');
+
 var authComponent=require('./components/auth');
 var errorHandler=require('./middlewares/error-handler');
 
@@ -14,6 +16,7 @@ var app=express();
 passport.use(authComponent);
 
 app.use(passport.initialize());
+app.use(pts.init());
 app.use(bodyParser.json());
 
 app.use('/auth',routerAuth);
