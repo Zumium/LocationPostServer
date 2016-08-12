@@ -30,9 +30,10 @@ router.patch('/:username',
 		passport.authenticate('basic',{session:false}),
 		(req,res,next)=>{
 			//permission check
-			if(req.user!=req.params.username) throw genError(403,'Not permitted');
+			if(req.user!=req.params.username)
+				return next(genError(403,'Not permitted'));
 			if(req.body.username)
-				throw genError(400,'Cannot to change username');
+				return next(genError(400,'Cannot to change username'));
 
 			us.findOneByUsername(req.params.username)
 				.then((user)=>{
@@ -44,6 +45,27 @@ router.patch('/:username',
 				})
 				.catch(next);
 		}
+);
+//=============================================================
+router.put('/:username/password',
+	passport.authenticate('basic',{session:false}),
+	(req,res,next)=>{
+		//user authorization check
+		if(req.user!=req.params.username)
+			return next(genError(403,'Not permitted'));
+		//content valiation check
+		if(!util.isString(req.body))
+			return next(genError(400,'Wrong request content'));
+
+		us.findOneByUsername(req.params.username)
+			.then((user)=>{
+				return user.update({password:req.body}); //filter out other properties for safety
+			})
+			.then(()=>{
+				res.sendStatus(204);
+			})
+			.catch(next);
+	}
 );
 //=============================================================
 router.get('/:username/posts',(req,res,next)=>{
