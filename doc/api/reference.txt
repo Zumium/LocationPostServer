@@ -1,0 +1,51 @@
+/auth ==> 验证登录用户名密码是否正确
+方法:POST
+内容:
+{
+  "username":"用户名",
+  "password":"密码"
+}
+返回值: 成功:{"result":"succeed"},失败:{"result":"failed"}
+
+/users ==> 全体用户
+方法:POST ==> 注册新用户
+内容:
+{
+  "username":"用户名",
+  "password":"密码",
+  "name":"姓名",
+  "birthday":"生日",
+  "gender":"性别（男:Male，女:Female）",
+  "briefIntro":"简短介绍"
+}
+
+/users/:id ==> 指定用户名的新用户
+方法:GET ==> 获取指定用户的个人资料(具体内容格式见上,不包括password)
+方法:PATCH ==> 修改制定用户的个人资料(具体内容格式见上,不允许修改username)
+
+/users/:id/posts ==> 指定用户曾经发布的消息
+方法:GET ==> 获取发布的消息
+
+/users/:id/follow ==> 指定用户所关注的用户
+方法:GET ==> 获取关注用户列表
+方法:PATCH ==> 修改关注列表
+内容:
+{
+  "operation":"要进行的操作，添加关注:add,取消关注:delete",
+  "username":["要添加或取消关注的用户的用户名，必须要写成列表的形式"]
+}
+
+/posts ==> 发送的消息
+方法:POST ==> 发送新消息
+内容:
+{
+  "content":"内容",
+  "location":{
+    "latitude":经度(大于-180，小于180),
+    "longitude":纬度(大于-180，小于180)
+  }
+}
+
+/posts/:pid ==> 具体某一条消息
+方法:GET ==> 获取具体内容
+方法:DELETE ==> 删除该条消息
