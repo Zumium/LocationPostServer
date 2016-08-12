@@ -69,16 +69,20 @@ router.put('/:username/password',
 	}
 );
 //=============================================================
-router.get('/:username/portrait',(req,res,next)=>{
-	pts.getPortrait(req.params.username,res)
-		.then(()=>{
-			res.sendStatus(200);
-		})
-		.catch(next);
-});
+router.get('/:username/portrait',
+	pts.init(),
+	(req,res,next)=>{
+		pts.getPortrait(req.params.username,res)
+			.then(()=>{
+				res.sendStatus(200);
+			})
+			.catch(next);
+	}
+);
 
 router.put('/:username/portrait',
 	passport.authenticate('basic',{session:false}),
+	pts.init(),
 	(req,res,next)=>{
 		if(req.user!=req.params.username)
 			return next(genError('403','Not permitted'));
