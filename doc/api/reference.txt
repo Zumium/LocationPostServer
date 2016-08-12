@@ -19,14 +19,21 @@
   "briefIntro":"简短介绍"
 }
 
-/users/:id ==> 指定用户名的新用户
+/users/:username ==> 指定用户名的新用户
 方法:GET ==> 获取指定用户的个人资料(具体内容格式见上,不包括password)
 方法:PATCH ==> 修改制定用户的个人资料(具体内容格式见上,不允许修改username)
 
-/users/:id/posts ==> 指定用户曾经发布的消息
+/users/:username/password ==> 指定用户的密码
+方法:PUT ==> 修改密码
+内容:
+{
+  "password":"新密码"
+}
+
+/users/:username/posts ==> 指定用户曾经发布的消息
 方法:GET ==> 获取发布的消息
 
-/users/:id/follow ==> 指定用户所关注的用户
+/users/:username/follow ==> 指定用户所关注的用户
 方法:GET ==> 获取关注用户列表
 方法:PATCH ==> 修改关注列表
 内容:
