@@ -6,7 +6,6 @@ mongoose.connect('mongodb://mongodb/locationpost');
 
 var personSchema=mongoose.Schema({
 	name:String,
-	portrait:String,
 	gender:{type:String,required:true,enum:['Male','Female']},
 	birthday:{type:Date,required:true},
 	briefIntro:String

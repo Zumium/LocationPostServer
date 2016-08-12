@@ -30,6 +30,13 @@
   "password":"新密码"
 }
 
+/users/:username/portrait ==> 指定用户的头像
+方法:GET ==> 获取头像
+内容:二进制图片
+
+方法:PUT ==> 修改头像
+内容:二进制图片
+
 /users/:username/posts ==> 指定用户曾经发布的消息
 方法:GET ==> 获取发布的消息
 

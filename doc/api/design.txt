@@ -12,6 +12,10 @@
 /users/:username/password
 方法:PUT ==> 修改密码
 
+/users/:username/portrait
+方法:GET ==> 获取头像
+方法:PUT ==> 修改头像
+
 /users/:id/posts ==> 指定用户曾经发布的消息
 方法:GET ==> 获取发布的消息
 

@@ -1,5 +1,6 @@
 var us=require('../services/userservice');
 var ps=require('../services/postservice');
+var pts=require('../services/portraitservice');
 var genError=require('../tools/gene-error');
 var userTools=require('../tools/user');
 var util=require('util');
@@ -63,6 +64,27 @@ router.put('/:username/password',
 			})
 			.then(()=>{
 				res.sendStatus(204);
+			})
+			.catch(next);
+	}
+);
+//=============================================================
+router.get('/:username/portrait',(req,res,next)=>{
+	pts.getPortrait(req.params.username,res)
+		.then(()=>{
+			res.sendStatus(200);
+		})
+		.catch(next);
+});
+
+router.put('/:username/portrait',
+	passport.authenticate('basic',{session:false}),
+	(req,res,next)=>{
+		if(req.user!=req.params.username)
+			return next(genError('403','Not permitted'));
+		pts.setPortrait(req.params.username,req)
+			.then(()=>{
+				res.sendStatus(200);
 			})
 			.catch(next);
 	}
