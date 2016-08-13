@@ -39,7 +39,7 @@ exports.setPortrait=function(username,instream){
 				return gfs.removeAsync(option);
 			else
 				return;
-		});
+		})
 		.then(()=>{
 			var gfsWriteStream=gfs.createWriteStream(option);
 			gfsWriteStream.on('finish',resolve);
