@@ -1,3 +1,4 @@
+（注意：除头像api外，其余部分请添加Content-Type=application/json HTTP请求头，否则服务器无法正确处理）
 /auth ==> 验证登录用户名密码是否正确
 方法:POST
 内容:
