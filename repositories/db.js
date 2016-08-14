@@ -37,7 +37,7 @@ var locationSchema=mongoose.Schema({
 var postSchema=mongoose.Schema({
 	location:{type:locationSchema,required:true,index:true},
 	content:{type:String,required:true},
-	pictures:[String],
+	pictures:[mongoose.Schema.Types.ObjectId],
 	time:{type:Date,default:Date.now},
 	sender:{type:String,required:true}
 },{toJSON:{

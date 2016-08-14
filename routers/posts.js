@@ -4,6 +4,7 @@ var Promise=require('bluebird');
 var util=require('util');
 var ps=require('../services/postservice');
 var genError=require('../tools/gene-error');
+var upload=require('../components/picture');
 
 var router=module.exports=express.Router();
 
@@ -36,13 +37,20 @@ router.get('/',(req,res,next)=>{
 
 router.post('/',
 		passport.authenticate('basic',{session:false}),
+		upload.array('pictures',5),
 		(req,res,next)=>{
 			var newPost=req.body;
 			newPost.sender=req.user;
 			if(newPost.time) delete newPost.time;
+			var postId=null;
 			ps.publishNewPost(newPost)
 				.then((np)=>{
-					res.location('/posts/'+np.id).sendStatus(201);
+					postId=np.id;
+					np.set('pictures',req.files.map((imgFile)=>imgFile.gridfsEntry._id));
+					return np.save();
+				})
+				.then(()=>{
+					res.location('/posts/'+postId).sendStatus(201);
 				})
 				.catch(next);
 		}

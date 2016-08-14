@@ -24,6 +24,8 @@
     "body-parser": ">=1.15.0",
     "bluebird": ">=3.4.0",
     "mongodb": ">=2.2.0",
-    "gridfs-stream": ">=1.1.0"
+    "gridfs-stream": ">=1.1.0",
+    "multer": ">=1.2.0",
+    "gridfs-storage-engine": ">=0.2.0"
   }
 }
