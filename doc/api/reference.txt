@@ -51,6 +51,8 @@
 }
 
 /posts ==> 发送的消息
+方法:GET ==> 获取附近的消息
+参数:?latitude=纬度&longitude=经度&range=范围
 方法:POST ==> 发送新消息
 内容:
 {

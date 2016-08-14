@@ -35,7 +35,7 @@ var locationSchema=mongoose.Schema({
 },{id:false,_id:false});
 
 var postSchema=mongoose.Schema({
-	location:{type:locationSchema,required:true},
+	location:{type:locationSchema,required:true,index:true},
 	content:{type:String,required:true},
 	pictures:[String],
 	time:{type:Date,default:Date.now},

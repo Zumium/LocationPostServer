@@ -1,9 +1,35 @@
 var express=require('express');
 var passport=require('passport');
+var Promise=require('bluebird');
 var ps=require('../services/postservice');
 var genError=require('../tools/gene-error');
 
 var router=module.exports=express.Router();
+
+router.get('/',(req,res,next)=>{
+	new Promise((resolve,reject)=>{
+		try{
+			var parseRes={};
+			parseRes.latitude=parseFloat(req.query.latitude);
+			parseRes.longitude=parseFloat(req.query.longitude);
+			parseRes.range=parseInt(req.query.range);
+			resolve(parseRes);
+		}
+		catch(e){
+			e.suggestStatusCode=400;
+			reject(e);
+		} 
+	})
+	.then((parameters)=>{
+		return ps.findNearbyPosts({latitude:parameters.latitude,longitude:parameters.longitude},parameters.range);
+	})
+	.then((posts)=>{
+		res.status(200).json(
+			posts.map((post)=>post.toJSON())
+		);
+	})
+	.catch(next);
+});
 
 router.post('/',
 		passport.authenticate('basic',{session:false}),
