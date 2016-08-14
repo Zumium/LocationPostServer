@@ -1,6 +1,7 @@
 var express=require('express');
 var passport=require('passport');
 var Promise=require('bluebird');
+var util=require('util');
 var ps=require('../services/postservice');
 var genError=require('../tools/gene-error');
 
@@ -13,10 +14,12 @@ router.get('/',(req,res,next)=>{
 			parseRes.latitude=parseFloat(req.query.latitude);
 			parseRes.longitude=parseFloat(req.query.longitude);
 			parseRes.range=parseInt(req.query.range);
+
+			if(!(util.isNumber(parseRes.latitude)&&util.isNumber(parseRes.longitude)&&util.isNumber(parseRes.range)))
+				throw genError(400,'Wrong query parameters');
 			resolve(parseRes);
 		}
 		catch(e){
-			e.suggestStatusCode=400;
 			reject(e);
 		} 
 	})
