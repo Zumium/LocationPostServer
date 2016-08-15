@@ -3,6 +3,7 @@ var ps=require('../services/postservice');
 var pts=require('../services/portraitservice');
 var genError=require('../tools/gene-error');
 var userTools=require('../tools/user');
+var gridfs=require('../components/gridfs');
 var util=require('util');
 var express=require('express');
 var passport=require('passport');
@@ -70,9 +71,9 @@ router.put('/:username/password',
 );
 //=============================================================
 router.get('/:username/portrait',
-	pts.init(),
+	gridfs.init(),
 	(req,res,next)=>{
-		pts.getPortrait(req.params.username,res)
+		pts.getPortrait(req.gridfs,req.params.username,res)
 			.then(()=>{
 				res.sendStatus(200);
 			})
@@ -82,11 +83,11 @@ router.get('/:username/portrait',
 
 router.put('/:username/portrait',
 	passport.authenticate('basic',{session:false}),
-	pts.init(),
+	gridfs.init(),
 	(req,res,next)=>{
 		if(req.user!=req.params.username)
 			return next(genError('403','Not permitted'));
-		pts.setPortrait(req.params.username,req)
+		pts.setPortrait(req.gridfs,req.params.username,req)
 			.then(()=>{
 				res.sendStatus(200);
 			})

@@ -5,6 +5,7 @@ var util=require('util');
 var ps=require('../services/postservice');
 var genError=require('../tools/gene-error');
 var upload=require('../components/picture');
+var gridfs=require('../components/gridfs');
 
 var router=module.exports=express.Router();
 
@@ -66,12 +67,18 @@ router.get('/:pid',(req,res,next)=>{
 
 router.delete('/:pid',
 	passport.authenticate('basic',{session:false}),
+	gridfs,init(),
 	(req,res,next)=>{
+		var pictures=null;
 		ps.findOneById(req.params.pid)
 			.then((post)=>{
 				if(post.get('sender')!=req.user)
 					throw genError(403,'Not permitted');
+				pictures=post.get('pictures');
 				return post.remove();
+			})
+			.then(()=>{
+				return Promise.all(pictures.map((eachId)=>req.gridfs.remove({_id:eachId})));
 			})
 			.then(()=>{
 				res.sendStatus(204);

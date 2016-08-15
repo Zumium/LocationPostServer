@@ -1,34 +1,9 @@
 var Promise=require('bluebird');
-var mongo=Promise.promisifyAll(require('mongodb'));
-var grid=require('gridfs-stream');
 
 const prefix='PORTRAIT_';
 const emptyPortrait=prefix+'DEFAULT';
-var isDbOpened=false;
 
-var db=new mongo.Db('locationpost',new mongo.Server('mongodb',27017));
-var gfs=null;
-
-function getFileName(username){
-	return prefix+username;
-}
-
-exports.init=function(){
-	return (req,res,next)=>{
-		if(isDbOpened) return next();
-		else{
-			db.openAsync()
-			.then(()=>{
-				gfs=Promise.promisifyAll(grid(db,mongo));
-				isDbOpened=true;
-				next();
-			})
-			.catch(next);
-		}
-	};
-}
-
-exports.setPortrait=function(username,instream){
+exports.setPortrait=function(gfs,username,instream){
 	return new Promise((resolve,reject)=>{
 		if(!username || !instream)
 			return reject(new Error('username or instream is empty'));
@@ -51,7 +26,7 @@ exports.setPortrait=function(username,instream){
 	});
 }
 
-exports.getPortrait=function(username,outstream){
+exports.getPortrait=function(gfs,username,outstream){
 	return new Promise((resolve,reject)=>{
 		if(!username || !outstream)
 			return reject(new Error('username or outstream is empty'));
