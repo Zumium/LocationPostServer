@@ -67,7 +67,7 @@ router.get('/:pid',(req,res,next)=>{
 
 router.delete('/:pid',
 	passport.authenticate('basic',{session:false}),
-	gridfs,init(),
+	gridfs.init(),
 	(req,res,next)=>{
 		var pictures=null;
 		ps.findOneById(req.params.pid)

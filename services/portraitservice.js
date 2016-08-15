@@ -3,6 +3,10 @@ var Promise=require('bluebird');
 const prefix='PORTRAIT_';
 const emptyPortrait=prefix+'DEFAULT';
 
+function getFileName(username){
+	return prefix+username;
+}
+
 exports.setPortrait=function(gfs,username,instream){
 	return new Promise((resolve,reject)=>{
 		if(!username || !instream)
