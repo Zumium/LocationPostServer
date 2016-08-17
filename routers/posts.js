@@ -47,8 +47,10 @@ router.post('/',
 			ps.publishNewPost(newPost)
 				.then((np)=>{
 					postId=np.id;
-					np.set('pictures',req.files.map((imgFile)=>imgFile.gridfsEntry._id));
-					return np.save();
+					if(req.files)
+						np.set('pictures',req.files.map((imgFile)=>imgFile.gridfsEntry._id));
+						return np.save();
+					return;
 				})
 				.then(()=>{
 					res.location('/posts/'+postId).sendStatus(201);

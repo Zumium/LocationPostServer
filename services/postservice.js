@@ -34,8 +34,8 @@ exports.findNearbyPosts=function(position,range){
 	return new Promise((resolve,reject)=>{
 		var degreeRange=range/METER_PER_DEGREE;
 		db.Post.find({
-			'location.latitude':{$gt:position.latitude-degreeRange,$lt:position.latitude+degreeRange},
-			'location.longitude':{$gt:position.longitude-degreeRange,$lt:position.longitude+degreeRange}
+			'location.latitude':{$gte:position.latitude-degreeRange,$lte:position.latitude+degreeRange},
+			'location.longitude':{$gte:position.longitude-degreeRange,$lte:position.longitude+degreeRange}
 		})
 		.then(resolve,reject);
 	});

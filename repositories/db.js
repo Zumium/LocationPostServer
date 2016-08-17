@@ -39,6 +39,7 @@ var postSchema=mongoose.Schema({
 	content:{type:String,required:true},
 	pictures:[mongoose.Schema.Types.ObjectId],
 	time:{type:Date,default:Date.now},
+	refer:{type:mongoose.Schema.Types.ObjectId},
 	sender:{type:String,required:true}
 },{toJSON:{
 	virtuals:true,
