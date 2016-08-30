@@ -3,9 +3,11 @@ var passport=require('passport');
 var Promise=require('bluebird');
 var util=require('util');
 var ps=require('../services/postservice');
+var cs=require('../services/commentservice');
 var genError=require('../tools/gene-error');
 var upload=require('../components/picture');
 var gridfs=require('../components/gridfs');
+var _=require('underscore');
 
 var router=module.exports=express.Router();
 
@@ -88,3 +90,34 @@ router.delete('/:pid',
 			.catch(next);
 	}
 );
+
+router.get('/:nid/comments',(req,res,next)=>{	
+	ps.postExists(req.params.nid)
+	.then((isExist)=>{
+		if(!isExist)
+			throw genError(404,'No such post');
+
+		var segmentSelector=_.pick(_.mapObject(_.pick(req.query,'start','end'),(val)=>parseInt(val)),(val)=>util.isNumber(val));
+		return cs.getComments(req.params.nid,segmentSelector);
+	})
+	.then((comments)=>{
+		res.status(200).json(comments);
+	})
+	.catch(next);
+});
+
+router.post('/:nid/comments',(req,res,next)=>{
+	if(!util.isString(req.body.comment))
+		return next(genError(400,'Must have \'comment\' key and it must be a string'));
+
+	ps.postExists(req.params.nid)
+	.then((isExist)=>{
+		if(!isExist)
+			throw genError(404,'No such post');
+		return cs.appendComment({comment:req.body.comment,sender:req.user,postId:req.params.nid});
+	})
+	.then(()=>{
+		res.sendStatus(201);
+	})
+	.catch(next);
+});

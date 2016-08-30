@@ -40,3 +40,13 @@ exports.findNearbyPosts=function(position,range){
 		.then(resolve,reject);
 	});
 }
+
+exports.postExists=function(id){
+	return new Promise((resolve,reject)=>{
+		db.Post.count({where:{id:id}})
+		.then((count)=>{
+			resolve(count==1);
+		})
+		.catch(reject);
+	});
+}

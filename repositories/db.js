@@ -50,4 +50,22 @@ var postSchema=mongoose.Schema({
 		  }
 }});
 
+
+var commentSchema=mongoose.Schema({
+	postId:{type:String,required:true},
+	comment:{type:String,required:true},
+	time:{type:Date,default:Date.now},
+	sender:{type:String,required:true}
+},{
+	toJSON:{
+		transform:function(doc,ret,options){
+			delete ret._id;
+			delete ret.__v;
+			delete ret.notificationId;
+			return ret;
+		}
+	}
+});
+
 exports.Post=mongoose.model('Post',postSchema);
+exports.Comment=mongoose.model('Comment',commentSchema);
