@@ -106,7 +106,9 @@ router.get('/:nid/comments',(req,res,next)=>{
 	.catch(next);
 });
 
-router.post('/:nid/comments',(req,res,next)=>{
+router.post('/:nid/comments',
+	passport.authenticate('basic',{session:false}),
+	(req,res,next)=>{
 	if(!util.isString(req.body.comment))
 		return next(genError(400,'Must have \'comment\' key and it must be a string'));
 

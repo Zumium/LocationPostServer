@@ -26,6 +26,7 @@
     "mongodb": ">=2.2.0",
     "gridfs-stream": ">=1.1.0",
     "multer": ">=1.2.0",
-    "gridfs-storage-engine": ">=0.2.0"
+    "gridfs-storage-engine": ">=0.2.0",
+    "underscore": ">=1.8.0"
   }
 }

@@ -43,7 +43,7 @@ exports.findNearbyPosts=function(position,range){
 
 exports.postExists=function(id){
 	return new Promise((resolve,reject)=>{
-		db.Post.count({where:{id:id}})
+		db.Post.count({_id:id})
 		.then((count)=>{
 			resolve(count==1);
 		})
