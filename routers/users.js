@@ -12,7 +12,11 @@ var Promise=require('bluebird');
 var router=module.exports=express.Router();
 
 router.post('/',(req,res,next)=>{
-	us.addUser(req.body)
+	us.checkUserExists(req.body.username)
+		.then((isExists)=>{
+			if(isExists) throw genError(403,'用户名已被占用');
+			return us.addUser(req.body)
+		})
 		.then((newUser)=>{
 			res.location('/users/'+newUser.username).sendStatus(201);
 		})
