@@ -8,6 +8,7 @@ var util=require('util');
 var express=require('express');
 var passport=require('passport');
 var Promise=require('bluebird');
+var _=require('underscore');
 
 var router=module.exports=express.Router();
 
@@ -44,7 +45,7 @@ router.patch('/:username',
 
 			us.findOneByUsername(req.params.username)
 				.then((user)=>{
-					return user.update({person:req.body});
+					return user.update({person:_.extend(user.get('person'),req.body)});
 				})
 				.then((result)=>{
 					if(result.ok==0) throw genError(400,'Operation failed due to wrong request');
