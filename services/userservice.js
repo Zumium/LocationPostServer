@@ -4,6 +4,15 @@ var filtObject=require('../tools/filt-object');
 var clone=require('../tools/clone');
 var Promise=require('bluebird');
 
+var searchQueryGenerator={
+	username:(keyword)=>{
+		return {username:new RegExp(keyword,'i')};
+	},
+  	name:(keyword)=>{
+	 	return {'person.name':new RegExp(keyword,'i')};
+	}
+};
+
 exports.addUser=function(personInfo){
 	return new Promise((resolve,reject)=>{
 		if(!personInfo['username']) return reject(genError(400,'Must have a username'));
@@ -48,6 +57,15 @@ exports.checkUserExists=function(username){
 				if(count==0) return resolve(false);
 				resolve(true);
 			})
+			.catch(reject);
+	});
+}
+
+exports.searchUser=function(keyword,matchFields){
+	return new Promise((resolve,reject)=>{
+		var searchQuery=matchFields.map((each)=>(searchQueryGenerator[each])(keyword));
+		db.User.find({$or:searchQuery})
+			.then(resolve)
 			.catch(reject);
 	});
 }

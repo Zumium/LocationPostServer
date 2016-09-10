@@ -12,6 +12,21 @@ var _=require('underscore');
 
 var router=module.exports=express.Router();
 
+router.get('/',(req,res,next)=>{
+	if(!req.query.search)
+		return next(genError(400,'Must have \'search\' query'));
+
+	us.searchUser(req.query.search,['username','user'])
+		.then((users)=>{
+			res.status(200).json(users.map((user)=>{
+				var personalInfo=userTools.abstractUserInfo(user);
+				personalInfo.username=user.get('username');
+				return personalInfo;
+			}));
+		})
+		.catch(next);
+});
+
 router.post('/',(req,res,next)=>{
 	us.checkUserExists(req.body.username)
 		.then((isExists)=>{
