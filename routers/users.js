@@ -16,7 +16,7 @@ router.get('/',(req,res,next)=>{
 	if(!req.query.search)
 		return next(genError(400,'Must have \'search\' query'));
 
-	us.searchUser(req.query.search,['username','user'])
+	us.searchUser(req.query.search,['username','name'])
 		.then((users)=>{
 			res.status(200).json(users.map((user)=>{
 				var personalInfo=userTools.abstractUserInfo(user);
