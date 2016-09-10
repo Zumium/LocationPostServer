@@ -7,7 +7,7 @@ mongoose.connect('mongodb://mongodb/locationpost');
 var personSchema=mongoose.Schema({
 	name:String,
 	gender:{type:String,enum:['Male','Female']},
-	birthday:{type:Date},
+	birthday:{type:Date,default:Date.now},
 	briefIntro:String
 },{id:false,_id:false,toJSON:{virtuals:true}});
 personSchema.virtual('age').get(function(){
